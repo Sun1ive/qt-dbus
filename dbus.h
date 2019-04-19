@@ -15,6 +15,7 @@ public:
 public slots:
     uint getState() const;
     void setState(const uint state);
+    QString getIp() const;
 
 signals:
     void stateChanged();

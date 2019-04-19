@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>../../../Downloads/wifi.svg</file>
+        <file>images/ethernet.svg</file>
+        <file>images/wifi.svg</file>
     </qresource>
 </RCC>

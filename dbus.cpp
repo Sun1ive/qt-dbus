@@ -1,13 +1,20 @@
 #include "dbus.h"
+#include <iostream>
 #include <QDebug>
 #include <QObject>
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusInterface>
+#include <QDBusReply>
+#include <QHostAddress>
+#include <QNetworkInterface>
+
+
 
 Dbus::Dbus(QObject *parent) : QObject(parent)
 {
     m_state = this->getCurrentNmState();
+//    QString s = this->getIp();
 }
 
 uint Dbus::getCurrentNmState() {
@@ -23,6 +30,21 @@ uint Dbus::getCurrentNmState() {
     }
 
     return 0;
+}
+
+QString Dbus::getIp() const {
+    const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+    QList<QString> list;
+
+    for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost) {
+            list.append(address.toString());
+        }
+    }
+
+    qDebug() << list;
+
+    return list.at(0);
 }
 
 uint Dbus::getState() const {

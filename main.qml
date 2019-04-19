@@ -10,18 +10,22 @@ Window {
     title: qsTr("Network Manager status bar")
 
     Button {
+        id: dbusstate
         text: dbus.state
-    }
-
-    Rectangle {
-        width: parent.width
-        height: parent.height
-
-        Image {
-            id: icon
-            source: "./wifi.svg"
-            height: 50
-            width: 50
+        onClicked: {
+            console.log(dbus.getIp());
         }
     }
+
+//    Rectangle {
+//        width: parent.width
+//        height: parent.height
+
+//        Image {
+//            id: icon
+//            source: "images/wifi.svg"
+//            height: 50
+//            width: 50
+//        }
+//    }
 }
