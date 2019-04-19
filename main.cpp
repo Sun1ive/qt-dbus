@@ -63,7 +63,8 @@ int main(int argc, char *argv[])
     Dbus dbus;
     Listen l;
 
-    QDBusConnection::systemBus().connect("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager", "org.freedesktop.NetworkManager", "StateChanged", &l, SLOT(stateChanged(uint)));
+
+    QDBusConnection::systemBus().connect("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager", "org.freedesktop.NetworkManager", "StateChanged", &dbus, SLOT(setState(uint)));
 
 
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -71,6 +72,7 @@ int main(int argc, char *argv[])
 
         QQmlApplicationEngine engine;
         QQmlContext *context = engine.rootContext();
+
         context->setContextProperty("dbus", &dbus);
         context->setContextProperty("l", &l);
 

@@ -9,20 +9,18 @@ class Dbus : public QObject
     Q_PROPERTY(uint state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
-    Dbus();
-    uint getState() const {return m_state;}
-    void setState(const uint &state);
+    explicit Dbus(QObject *parent = nullptr);
 
 public slots:
-    uint getNmState();
+    uint getState() const;
+    void setState(const uint state);
 
 signals:
-    void stateChanged(uint state);
+    void stateChanged();
 
 private:
     uint m_state;
 };
-
 
 
 #endif // DBUS_H

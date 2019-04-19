@@ -7,16 +7,9 @@ Window {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("Network Manager status bar")
 
-     Button {
-       text: "Hello"
-       onClicked: {
-           console.log(dbus.state);
-           console.log("CLICKED");
-//           console.log(l.getState());
-           l.getState();
-       }
-   }
-
+    Button {
+        text: dbus.state
+    }
 }
