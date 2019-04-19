@@ -9,9 +9,11 @@ class Listen : public QObject
 
 public:
     Listen(QObject *parent=nullptr);
+    uint state;
 
 public slots:
     void stateChanged(uint state);
+    uint getState();
 };
 
 #endif

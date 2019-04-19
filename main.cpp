@@ -7,7 +7,9 @@
 #include <QDebug>
 #include <QDBusReply>
 #include <QObject>
+#include <QQmlContext>
 #include "listen.h"
+#include "dbus.h"
 
 using namespace std;
 
@@ -20,10 +22,10 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    Listen l;
+//    Listen l;
 
-    QDBusConnection::systemBus().connect("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager", "org.freedesktop.NetworkManager", "StateChanged",
-                                          &l, SLOT(stateChanged(uint)));
+//    QDBusConnection::systemBus().connect("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager", "org.freedesktop.NetworkManager", "StateChanged",
+//                                          &l, SLOT(stateChanged(uint)));
 
 // if (!QDBusConnection::systemBus().isConnected()) {
 //    qCritical() << "Cannot connect to the D-Bus session bus.\n";
@@ -58,14 +60,20 @@ int main(int argc, char *argv[])
 //        qDebug() << reply.arguments().at(0).toString();
 //    }
 
+    Dbus dbus;
+    Listen l;
 
+    QDBusConnection::systemBus().connect("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager", "org.freedesktop.NetworkManager", "StateChanged", &l, SLOT(stateChanged(uint)));
 
 
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
         QGuiApplication app(argc, argv);
 
         QQmlApplicationEngine engine;
+        QQmlContext *context = engine.rootContext();
+        context->setContextProperty("dbus", &dbus);
+        context->setContextProperty("l", &l);
+
         engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
         if (engine.rootObjects().isEmpty()) {
             return -1;
