@@ -10,6 +10,7 @@ class Dbus : public QObject
 
 public:
     explicit Dbus(QObject *parent = nullptr);
+    uint getCurrentNmState();
 
 public slots:
     uint getState() const;
