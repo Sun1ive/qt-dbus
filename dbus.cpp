@@ -9,12 +9,49 @@
 #include <QHostAddress>
 #include <QNetworkInterface>
 #include <QHostInfo>
+#include <QNetworkConfigurationManager>
+#include <QList>
 
-
+typedef struct ConnectionList {
+    QString type;
+    QString name;
+} LConnections;
 
 Dbus::Dbus(QObject *parent) : QObject(parent)
 {
     m_state = this->getCurrentNmState();
+}
+
+void Dbus::getNetworkConfiguration() {
+    QNetworkConfigurationManager qm;
+    QList<QNetworkConfiguration> netcfgList = qm.allConfigurations();
+
+    QList<LConnections> connections;
+
+    for (auto &x : netcfgList) {
+        if (x.bearerType() == QNetworkConfiguration::BearerWLAN) {
+            qDebug () << "WLAN FOUND";
+            LConnections item;
+            item.name = x.name();
+            item.type = "WIFI";
+
+            connections.append(item);
+        } else if (x.bearerType() == QNetworkConfiguration::BearerEthernet) {
+            qDebug() << "Ethernet found";
+            LConnections item;
+            item.name = x.name();
+            item.type = "eth0";
+
+            connections.append(item);
+        }
+
+    }
+
+//    for (int i = 0; i < netcfgList.length(); i++) {
+//        qDebug() << netcfgList[i].name();
+//        qDebug() << netcfgList[i].identifier();
+//        qDebug() << netcfgList[i].isValid();
+//    }
 }
 
 QString Dbus::getHostname() const {

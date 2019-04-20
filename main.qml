@@ -10,6 +10,15 @@ Window {
     height: 50
     title: qsTr("Network Manager status bar")
 
+    Button {
+        x: 617
+        y: 5
+        text: qsTr("Test")
+        onClicked: {
+            dbus.getNetworkConfiguretion();
+        }
+    }
+
     Text {
         id: iptext
         x: 0
