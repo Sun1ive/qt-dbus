@@ -16,6 +16,7 @@ public slots:
     uint getState() const;
     void setState(const uint state);
     QString getIp() const;
+    QString getHostname() const;
 
 signals:
     void stateChanged();

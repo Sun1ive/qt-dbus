@@ -8,13 +8,17 @@
 #include <QDBusReply>
 #include <QHostAddress>
 #include <QNetworkInterface>
+#include <QHostInfo>
 
 
 
 Dbus::Dbus(QObject *parent) : QObject(parent)
 {
     m_state = this->getCurrentNmState();
-//    QString s = this->getIp();
+}
+
+QString Dbus::getHostname() const {
+    return QHostInfo::localHostName();
 }
 
 uint Dbus::getCurrentNmState() {
@@ -41,8 +45,6 @@ QString Dbus::getIp() const {
             list.append(address.toString());
         }
     }
-
-    qDebug() << list;
 
     return list.at(0);
 }
