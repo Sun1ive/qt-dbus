@@ -3,6 +3,7 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.5
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Material 2.3
+import QtQuick.Dialogs 1.2
 
 Window {
     id: window
@@ -13,9 +14,13 @@ Window {
     maximumHeight: height;
     maximumWidth: width;
     minimumWidth: width;
-    flags: Qt.FramelessWindowHint | Qt.Window
+    flags: Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window
     y: Screen.desktopAvailableHeight
     Material.theme: Material.Dark
+    Component.onCompleted:  {
+        console.log(Screen.desktopAvailableWidth)
+        console.log(Screen.desktopAvailableHeight)
+    }
 
     Button {
         x: 908
@@ -93,8 +98,6 @@ Window {
             anchors.leftMargin: 0
             anchors.topMargin: 0
         }
-
-
     }
 
     Button {
@@ -103,17 +106,53 @@ Window {
         y: 5
         text: qsTr("Reboot")
         onClicked: {
-            dbus.rebootDevice();
+            //            dbus.rebootDevice();
+            rebootDialog.open();
         }
     }
 
+    Popup {
+        parent: ApplicationWindow.overlay
+        x: 200
+        y: -500
+        width: 100
+        height: 100
+        modal: true
+        focus: true
+        id: rebootDialog
+
+    }
+    /*
+    MessageDialog {
+        id: rebootDialog
+        text: "Are you sure?"
+        standardButtons: StandardButton.Yes | StandardButton.No
+        icon: StandardIcon.Question
+
+
+//        x: (window.width - width) / 2
+//        y: (window.height - height) / 2
+        Component.onCompleted:  {
+            console.log(Screen.desktopAvailableWidth)
+            console.log(Screen.desktopAvailableHeight)
+        }
+        onYes: {
+            //			dbus.rebootDevice()
+            console.log("Accepted")
+        }
+        onNo: {
+            console.log("No button pressed")
+            //            this.close();
+        }
+    }
+*/
     Button {
         id: shutdownBtn
         x: 595
         y: 5
         text: qsTr("Shutdown")
         onClicked: {
-            dbus.shutdownDevice();
+            //            dbus.shutdownDevice();
         }
     }
 }
