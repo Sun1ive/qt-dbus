@@ -19,7 +19,9 @@ typedef struct ConnectionList {
 
 Dbus::Dbus(QObject *parent) : QObject(parent)
 {
-    m_state = this->getCurrentNmState();
+    this->m_state = this->getCurrentNmState();
+    this->m_hostname = this->getHostname();
+    this->m_ip = this->getIp();
 }
 
 void Dbus::getNetworkConfiguration() {
@@ -94,7 +96,11 @@ void Dbus::setState(const uint state) {
     qDebug() << "state changed:\t" << state;
 
     this->m_state = state;
+    this->m_ip = this->getIp();
+    this->m_hostname = this->getHostname();
 
     qDebug() << "class state:\t" << this->m_state;
     emit stateChanged();
+    emit hostnameChanged();
+    emit ipChanged();
 }

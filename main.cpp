@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 
-     if(!QDBusConnection::systemBus().isConnected()) {
+    if(!QDBusConnection::systemBus().isConnected()) {
         qCritical() << "Cannot connect to the D-Bus session bus!";
         return EXIT_FAILURE;
     }

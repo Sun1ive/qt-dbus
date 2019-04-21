@@ -2,20 +2,30 @@ import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.5
 import QtGraphicalEffects 1.0
+import QtQuick.Controls.Material 2.3
 
 Window {
     id: window
-    visible: true
-    width: 900
+    width: Screen.desktopAvailableWidth
     height: 50
+    visible: true
+    minimumHeight: height;
+    maximumHeight: height;
+    maximumWidth: width;
+    minimumWidth: width;
+    flags: Qt.FramelessWindowHint | Qt.Window
+    y: Screen.desktopAvailableHeight - height
     title: qsTr("Network Manager status bar")
 
     Button {
         x: 617
         y: 5
         text: qsTr("Test")
+        Material.theme: Material.Dark
+        Material.accent: Material.Purple
+
         onClicked: {
-            dbus.getNetworkConfiguretion();
+            dbus.getNetworkConfiguration();
         }
     }
 
@@ -23,14 +33,16 @@ Window {
         id: iptext
         x: 0
         y: 17
-        text: qsTr("IP: " + dbus.getIp())
+//        text: qsTr("IP: " + dbus.getIp())
+        text: qsTr("IP: " + dbus.ip)
     }
 
     Text {
         id: hostname
         x: 197
         y: 17
-        text: qsTr("Hostname: " + dbus.getHostname())
+//        text: qsTr("Hostname: " + dbus.getHostname())
+        text: qsTr("Hostname: " + dbus.hostname);
     }
 
     function getNmColor(value) {
@@ -59,8 +71,8 @@ Window {
 
     Text {
         id: nmstatetext
-        x: 859
-        y: 75
+        x: 789
+        y: 10
         width: 50
         height: 20
         text: dbus.state
