@@ -14,15 +14,13 @@ Window {
     maximumWidth: width;
     minimumWidth: width;
     flags: Qt.FramelessWindowHint | Qt.Window
-    y: Screen.desktopAvailableHeight - height
-    title: qsTr("Network Manager status bar")
+    y: Screen.desktopAvailableHeight
+    Material.theme: Material.Dark
 
     Button {
-        x: 617
+        x: 908
         y: 5
         text: qsTr("Test")
-        Material.theme: Material.Dark
-        Material.accent: Material.Purple
 
         onClicked: {
             dbus.getNetworkConfiguration();
@@ -31,17 +29,15 @@ Window {
 
     Text {
         id: iptext
-        x: 0
+        x: 13
         y: 17
-//        text: qsTr("IP: " + dbus.getIp())
         text: qsTr("IP: " + dbus.ip)
     }
 
     Text {
         id: hostname
-        x: 197
+        x: 185
         y: 17
-//        text: qsTr("Hostname: " + dbus.getHostname())
         text: qsTr("Hostname: " + dbus.hostname);
     }
 
@@ -71,18 +67,18 @@ Window {
 
     Text {
         id: nmstatetext
-        x: 789
-        y: 10
+        x: 1163
+        y: 17
         width: 50
-        height: 20
+        height: 17
         text: dbus.state
         color: "#000"
     }
 
     Image {
         id: icon
-        x: 845
-        y: 0
+        x: Screen.desktopAvailableWidth - (width + 10);
+        y: 5
         source: "images/wifi.svg"
         width: window.height - 10
         height: window.height - 10
@@ -99,5 +95,25 @@ Window {
         }
 
 
+    }
+
+    Button {
+        id: rebootBtn
+        x: 473
+        y: 5
+        text: qsTr("Reboot")
+        onClicked: {
+            dbus.rebootDevice();
+        }
+    }
+
+    Button {
+        id: shutdownBtn
+        x: 595
+        y: 5
+        text: qsTr("Shutdown")
+        onClicked: {
+            dbus.shutdownDevice();
+        }
     }
 }

@@ -12,15 +12,15 @@ class Dbus : public QObject
 
 public:
     explicit Dbus(QObject *parent = nullptr);
-    uint getCurrentNmState();
 
 public slots:
     uint getState() const;
     void setState(const uint state);
     void getNetworkConfiguration();
     QString getIp() const;
-//    void setIp(QString ip);
     QString getHostname() const;
+    void rebootDevice();
+    void shutdownDevice();
 
 signals:
     void stateChanged();

@@ -19,9 +19,32 @@ typedef struct ConnectionList {
 
 Dbus::Dbus(QObject *parent) : QObject(parent)
 {
-    this->m_state = this->getCurrentNmState();
+    this->m_state = this->getState();
     this->m_hostname = this->getHostname();
     this->m_ip = this->getIp();
+}
+
+void Dbus::rebootDevice() {
+    QDBusConnection bus = QDBusConnection::systemBus();
+    QDBusInterface dbus_interface("org.freedesktop.login1", "/org/freedesktop/login1",
+                                  "org.freedesktop.login1.Manager", bus);
+    QDBusMessage reply = dbus_interface.call("Reboot", true);
+
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        qCritical() << "W: " << reply.errorName() << ":" << reply.errorMessage();
+    }
+}
+
+void Dbus::shutdownDevice() {
+    QDBusConnection bus = QDBusConnection::systemBus();
+    QDBusInterface dbus_interface("org.freedesktop.login1", "/org/freedesktop/login1",
+                                  "org.freedesktop.login1.Manager", bus);
+
+    QDBusMessage reply = dbus_interface.call("PowerOff", true);
+
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        qCritical() << "W: " << reply.errorName() << ":" << reply.errorMessage();
+    }
 }
 
 void Dbus::getNetworkConfiguration() {
@@ -48,31 +71,10 @@ void Dbus::getNetworkConfiguration() {
         }
 
     }
-
-//    for (int i = 0; i < netcfgList.length(); i++) {
-//        qDebug() << netcfgList[i].name();
-//        qDebug() << netcfgList[i].identifier();
-//        qDebug() << netcfgList[i].isValid();
-//    }
 }
 
 QString Dbus::getHostname() const {
     return QHostInfo::localHostName();
-}
-
-uint Dbus::getCurrentNmState() {
-    QDBusConnection bus = QDBusConnection::systemBus();
-    QDBusInterface dbus_interface("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager",
-                                  "org.freedesktop.NetworkManager", bus);
-    QDBusMessage reply = dbus_interface.call("state");
-
-    if (reply.type() == QDBusMessage::ReplyMessage)
-    {
-        qDebug() << reply.arguments().at(0).toString();
-        return reply.arguments().at(0).toString().split(" ")[0].toUInt();
-    }
-
-    return 0;
 }
 
 QString Dbus::getIp() const {
@@ -85,11 +87,21 @@ QString Dbus::getIp() const {
         }
     }
 
-    return list.at(0);
+    return list[0];
 }
 
 uint Dbus::getState() const {
-  return m_state;
+    QDBusConnection bus = QDBusConnection::systemBus();
+    QDBusInterface dbus_interface("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager",
+                                  "org.freedesktop.NetworkManager", bus);
+    QDBusMessage reply = dbus_interface.call("state");
+
+    if (reply.type() == QDBusMessage::ReplyMessage)
+    {
+        return reply.arguments().at(0).toString().split(" ")[0].toUInt();
+    }
+
+    return 0;
 }
 
 void Dbus::setState(const uint state) {
