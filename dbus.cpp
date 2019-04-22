@@ -9,8 +9,11 @@
 #include <QHostAddress>
 #include <QNetworkInterface>
 #include <QHostInfo>
+#include <QVariant>
 #include <QNetworkConfigurationManager>
 #include <QList>
+
+Q_DECLARE_METATYPE(QList<QDBusObjectPath>);
 
 typedef struct ConnectionList {
     QString type;
@@ -47,53 +50,79 @@ void Dbus::shutdownDevice() {
     }
 }
 
-void Dbus::getNetworkConfiguration() {
-    QNetworkConfigurationManager qm;
-    QList<QNetworkConfiguration> netcfgList = qm.allConfigurations();
-
-    QList<LConnections> connections;
-
-    for (auto &x : netcfgList) {
-        if (x.bearerType() == QNetworkConfiguration::BearerWLAN) {
-            qDebug () << "WLAN FOUND";
-            LConnections item;
-            item.name = x.name();
-            item.type = "WIFI";
-
-            connections.append(item);
-        } else if (x.bearerType() == QNetworkConfiguration::BearerEthernet) {
-            qDebug() << "Ethernet found";
-            LConnections item;
-            item.name = x.name();
-            item.type = "eth0";
-
-            connections.append(item);
-        }
-
-    }
-}
-
 QString Dbus::getHostname() const {
     return QHostInfo::localHostName();
 }
 
+//QString Dbus::getIp() const {
+//    const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+//    QList<QString> list;
+
+//    for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
+//        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost) {
+//            list.append(address.toString());
+//        }
+//    }
+
+//    return list[0];
+//}
+
+
+
 QString Dbus::getIp() const {
-    const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
-    QList<QString> list;
+    const QDBusConnection systemBus = QDBusConnection::systemBus();
+    QString service = "org.freedesktop.NetworkManager";
+    QString servicePath = "/org/freedesktop/NetworkManager";
+    QString activeConnectionIface = "org.freedesktop.NetworkManager.Connection.Active";
+    QString ipv4Iface = "org.freedesktop.NetworkManager.IP4Config";
 
-    for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
-        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost) {
-            list.append(address.toString());
-        }
-    }
+//    QDBusInterface *iface = new QDBusInterface("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager",
+//                                               "org.freedesktop.NetworkManager", systemBus);
 
-    return list[0];
+    QDBusInterface *iface = new QDBusInterface(service, servicePath, service, systemBus);
+
+    QVariant reply = iface->property( "ActiveConnections" );
+    QDBusObjectPath DBusPath = reply.value<QList<QDBusObjectPath>>()[0];
+    QString connectionPath = DBusPath.path();
+
+    qDebug() << connectionPath;
+
+    QDBusInterface *ifaceActiveConnection = new QDBusInterface(service, connectionPath, activeConnectionIface, systemBus);
+    QVariant replyActiveConnection = ifaceActiveConnection->property("Ip4Config");
+    QDBusObjectPath DBusSettingsPath = replyActiveConnection.value<QDBusObjectPath>();
+    QString ipv4Path = DBusSettingsPath.path();
+
+    qDebug() << ipv4Path;
+
+    QDBusInterface *ifaceIpv4 = new QDBusInterface(service, ipv4Path, ipv4Iface, systemBus);
+//    QVariant addresses = ifaceIpv4->property("Addresses");
+    QVariant gateway = ifaceIpv4->property("Gateway");
+//    QVariant addresses = ifaceIpv4->property("AddressData");
+
+
+    qDebug() << gateway.toString();
+//    qDebug() << addresses;
+
+
+
+    /*
+    QVariant replyConnectionUuid = ifaceActiveConnection->property("Uuid");
+    QVariant replyConnectionType = ifaceActiveConnection->property("Type");
+
+    QString connectionType = replyConnectionType.toString();
+    QString connectionUuid = replyConnectionUuid.toString();
+
+    qDebug () << "TYPE: " << connectionType << " Uuid: " << connectionUuid;
+*/
+
+    return "127.0.0.2";
 }
 
 uint Dbus::getState() const {
     QDBusConnection bus = QDBusConnection::systemBus();
     QDBusInterface dbus_interface("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager",
                                   "org.freedesktop.NetworkManager", bus);
+
     QDBusMessage reply = dbus_interface.call("state");
 
     if (reply.type() == QDBusMessage::ReplyMessage)
@@ -103,6 +132,8 @@ uint Dbus::getState() const {
 
     return 0;
 }
+
+
 
 void Dbus::setState(const uint state) {
     qDebug() << "state changed:\t" << state;

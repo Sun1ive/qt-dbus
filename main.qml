@@ -1,9 +1,10 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
-import QtQuick.Controls 2.5
+import QtQuick.Controls 2.0
 import QtGraphicalEffects 1.0
-import QtQuick.Controls.Material 2.3
+import QtQuick.Controls.Material 2.0
 import QtQuick.Dialogs 1.2
+import "getColor.js" as ColorFunc
 
 Window {
     id: window
@@ -15,12 +16,7 @@ Window {
     maximumWidth: width;
     minimumWidth: width;
     flags: Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window
-    y: Screen.desktopAvailableHeight
     Material.theme: Material.Dark
-    Component.onCompleted:  {
-        console.log(Screen.desktopAvailableWidth)
-        console.log(Screen.desktopAvailableHeight)
-    }
 
     Button {
         x: 908
@@ -46,30 +42,6 @@ Window {
         text: qsTr("Hostname: " + dbus.hostname);
     }
 
-    function getNmColor(value) {
-        var color = "";
-
-        switch (+value) {
-        case 20:
-            color = "red"
-            break;
-        case 40:
-            color = "yellow"
-            break;
-        case 60:
-            color = "yellow"
-            break;
-        case 70:
-            color = "green"
-            break;
-        default:
-            color = "#000";
-            break;
-        }
-
-        return color;
-    }
-
     Text {
         id: nmstatetext
         x: 1163
@@ -92,7 +64,7 @@ Window {
         ColorOverlay {
             anchors.fill: icon
             source: icon
-            color: getNmColor(dbus.state);
+            color: ColorFunc.getNmColor(dbus.state);
             anchors.rightMargin: 0
             anchors.bottomMargin: 0
             anchors.leftMargin: 0

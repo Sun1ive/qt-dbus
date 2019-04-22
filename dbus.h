@@ -16,7 +16,6 @@ public:
 public slots:
     uint getState() const;
     void setState(const uint state);
-    void getNetworkConfiguration();
     QString getIp() const;
     QString getHostname() const;
     void rebootDevice();

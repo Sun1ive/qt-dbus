@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
     Dbus dbus;
 
-    QDBusConnection::systemBus().connect("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager", "org.freedesktop.NetworkManager", "StateChanged", &dbus, SIGNAL(setState(uint)));
+    QDBusConnection::systemBus().connect("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager", "org.freedesktop.NetworkManager", "StateChanged", &dbus, SLOT(setState(uint)));
 
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

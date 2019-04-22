@@ -36,6 +36,8 @@
         "-I",
         "/usr/include/qt/QtCore",
         "-I",
+        "/home/sunlive/work/qt/build-qt-nm-Desktop-Release",
+        "-I",
         "/usr/include/libdrm",
         "-I",
         "/usr/lib/qt/mkspecs/linux-g++",
@@ -43,7 +45,7 @@
         "c++",
         "/home/sunlive/work/qt/qt-dbus/main.cpp"
     ],
-    "directory": "",
+    "directory": "/home/sunlive/work/qt/build-qt-nm-Desktop-Release",
     "file": "/home/sunlive/work/qt/qt-dbus/main.cpp"
 },
 {
@@ -83,15 +85,17 @@
         "-I",
         "/usr/include/qt/QtCore",
         "-I",
+        "/home/sunlive/work/qt/build-qt-nm-Desktop-Release",
+        "-I",
         "/usr/include/libdrm",
         "-I",
         "/usr/lib/qt/mkspecs/linux-g++",
         "-x",
         "c++",
-        "/home/sunlive/work/qt/qt-dbus/listen.cpp"
+        "/home/sunlive/work/qt/qt-dbus/dbus.cpp"
     ],
-    "directory": "",
-    "file": "/home/sunlive/work/qt/qt-dbus/listen.cpp"
+    "directory": "/home/sunlive/work/qt/build-qt-nm-Desktop-Release",
+    "file": "/home/sunlive/work/qt/qt-dbus/dbus.cpp"
 },
 {
     "arguments": [
@@ -130,14 +134,16 @@
         "-I",
         "/usr/include/qt/QtCore",
         "-I",
+        "/home/sunlive/work/qt/build-qt-nm-Desktop-Release",
+        "-I",
         "/usr/include/libdrm",
         "-I",
         "/usr/lib/qt/mkspecs/linux-g++",
         "-x",
         "c++-header",
-        "/home/sunlive/work/qt/qt-dbus/listen.h"
+        "/home/sunlive/work/qt/qt-dbus/dbus.h"
     ],
-    "directory": "",
-    "file": "/home/sunlive/work/qt/qt-dbus/listen.h"
+    "directory": "/home/sunlive/work/qt/build-qt-nm-Desktop-Release",
+    "file": "/home/sunlive/work/qt/qt-dbus/dbus.h"
 }
 ]
