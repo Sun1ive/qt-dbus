@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>images/ethernet.svg</file>
         <file>images/wifi.svg</file>
+        <file>images/settings.svg</file>
     </qresource>
 </RCC>

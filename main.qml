@@ -6,7 +6,7 @@ import QtQuick.Controls.Material 2.0
 import QtQuick.Dialogs 1.2
 import "getColor.js" as ColorFunc
 
-Window {
+ApplicationWindow {
     id: window
     width: Screen.desktopAvailableWidth
     height: 50
@@ -16,40 +16,34 @@ Window {
     maximumWidth: width;
     minimumWidth: width;
     flags: Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window
-    Material.theme: Material.Dark
+    y: Screen.desktopAvailableHeight - height;
 
-    Button {
-        x: 908
-        y: 5
-        text: qsTr("Test")
+    Behavior on maximumHeight {
+        PropertyAnimation {
+            easing.type: Easing.Bezier;
+            duration: 1500
+        }
+    }
 
-        onClicked: {
-            dbus.getNetworkConfiguration();
+     Behavior on minimumHeight {
+        PropertyAnimation {
+            easing.type: Easing.Bezier;
+            duration: 1500
         }
     }
 
     Text {
         id: iptext
-        x: 13
-        y: 17
+        x: 9
+        y: 13
         text: qsTr("IP: " + dbus.ip)
     }
 
     Text {
         id: hostname
-        x: 185
-        y: 17
+        x: 191
+        y: 13
         text: qsTr("Hostname: " + dbus.hostname);
-    }
-
-    Text {
-        id: nmstatetext
-        x: 1163
-        y: 17
-        width: 50
-        height: 17
-        text: dbus.state
-        color: "#000"
     }
 
     Image {
@@ -57,8 +51,8 @@ Window {
         x: Screen.desktopAvailableWidth - (width + 10);
         y: 5
         source: "images/wifi.svg"
-        width: window.height - 10
-        height: window.height - 10
+        width: 40
+        height: 40
         smooth: true
 
         ColorOverlay {
@@ -72,13 +66,37 @@ Window {
         }
     }
 
+    Image {
+        id: settingsIcon
+        x: 1805
+        y: 5
+        width: 40
+        height: 40
+        smooth: true
+        source: "images/settings.svg"
+
+        MouseArea {
+            anchors.fill: settingsIcon
+
+            onClicked: {
+                if (window.maximumHeight === 50 && window.minimumHeight === 50) {
+                    window.maximumHeight = Screen.desktopAvailableHeight
+                    window.minimumHeight = Screen.desktopAvailableHeight
+                } else {
+                    window.maximumHeight = 50;
+                    window.minimumHeight = 50;
+                }
+            }
+        }
+    }
+
     Button {
         id: rebootBtn
-        x: 473
+        x: 1005
         y: 5
         text: qsTr("Reboot")
         onClicked: {
-            //            dbus.rebootDevice();
+            //dbus.rebootDevice();
             rebootDialog.open();
         }
     }
@@ -86,7 +104,7 @@ Window {
     Popup {
         parent: ApplicationWindow.overlay
         x: 200
-        y: -500
+        y: 50
         width: 100
         height: 100
         modal: true
@@ -120,7 +138,7 @@ Window {
 */
     Button {
         id: shutdownBtn
-        x: 595
+        x: 1176
         y: 5
         text: qsTr("Shutdown")
         onClicked: {
