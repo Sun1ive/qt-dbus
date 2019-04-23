@@ -1,4 +1,5 @@
 #include "dbus.h"
+#include "dbusip4vconfig.h"
 #include <iostream>
 #include <QDebug>
 #include <QObject>
@@ -10,8 +11,10 @@
 #include <QNetworkInterface>
 #include <QHostInfo>
 #include <QVariant>
+#include <QException>
+#include <QDBusMetaType>
 #include <QNetworkConfigurationManager>
-//#include <QList>
+#include <QtEndian>
 
 typedef struct ConnectionList {
     QString type;
@@ -20,6 +23,7 @@ typedef struct ConnectionList {
 
 Dbus::Dbus(QObject *parent) : QObject(parent)
 {
+    qDBusRegisterMetaType<UIntListList>();
     this->m_state = this->getState();
     this->m_hostname = this->getHostname();
     this->m_ip = this->getIp();
@@ -68,14 +72,17 @@ QString Dbus::getIp() const {
 
 
 //QString Dbus::getIp() const {
+//    try {
 //    const QDBusConnection systemBus = QDBusConnection::systemBus();
 //    QString service = "org.freedesktop.NetworkManager";
 //    QString servicePath = "/org/freedesktop/NetworkManager";
 //    QString activeConnectionIface = "org.freedesktop.NetworkManager.Connection.Active";
 //    QString ipv4Iface = "org.freedesktop.NetworkManager.IP4Config";
 
-////    QDBusInterface *iface = new QDBusInterface("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager",
-////                                               "org.freedesktop.NetworkManager", systemBus);
+//    //    QDBusInterface *iface = new QDBusInterface("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager",
+//    //                                               "org.freedesktop.NetworkManager", systemBus);
+
+
 
 //    QDBusInterface *iface = new QDBusInterface(service, servicePath, service, systemBus);
 //    QVariant reply = iface->property( "ActiveConnections" );
@@ -91,16 +98,24 @@ QString Dbus::getIp() const {
 
 //    qDebug() << ipv4Path;
 
-//    QDBusInterface *ifaceIpv4 = new QDBusInterface(service, ipv4Path, ipv4Iface, systemBus);
-////    QVariant addresses = ifaceIpv4->property("Addresses");
-//    QVariant gateway = ifaceIpv4->property("Gateway");
-////    QVariant addresses = ifaceIpv4->property("AddressData");
+//    //    QDBusInterface *ifaceIpv4 = new QDBusInterface(service, ipv4Path, ipv4Iface, systemBus);
+
+////    DBusIP4ConfigInterface *abstractConfig = new DBusIP4ConfigInterface(service, ipv4Path, systemBus);
+
+////    QList<QList<uint>> addresses = abstractConfig->addresses();
+//    /*
+//    qDebug() << addresses[0][0];
+//    qDebug() << addresses[0][1];
+//    qDebug() << addresses[0][2];
+//*/
+//    //    qDebug() << addresses[0];
 
 
-//    qDebug() << gateway.toString();
-////    qDebug() << addresses;
 
 
+////    QHostAddress ip = QHostAddress(qFromBigEndian(addresses[0][0]));
+
+////    qDebug() << ip;
 
 //    /*
 //    QVariant replyConnectionUuid = ifaceActiveConnection->property("Uuid");
@@ -112,7 +127,16 @@ QString Dbus::getIp() const {
 //    qDebug () << "TYPE: " << connectionType << " Uuid: " << connectionUuid;
 //*/
 
-//    return "127.0.0.2";
+////    return ip.toString();
+////    return !addresses.empty() ? QHostAddress(qFromBigEndian(addresses[0][0])).toString() : "No connection";
+
+
+//      } catch (QException error) {
+//        qCritical() << "Error occured: " << error.what();
+//    }
+
+//    return "";
+
 //}
 
 
@@ -136,7 +160,7 @@ void Dbus::setState(const uint state) {
     qDebug() << "state changed:\t" << state;
 
     this->m_state = state;
-    this->m_ip = this->getIp();
+//    this->m_ip = this->getIp();
     this->m_hostname = this->getHostname();
 
     emit stateChanged();

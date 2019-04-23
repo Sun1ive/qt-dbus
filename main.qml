@@ -10,27 +10,36 @@ ApplicationWindow {
     id: window
     width: Screen.desktopAvailableWidth
     height: 50
+    minimumHeight: 50
+    maximumHeight: Screen.desktopAvailableHeight
     visible: true
-    minimumHeight: height;
-    maximumHeight: height;
-    maximumWidth: width;
-    minimumWidth: width;
-    flags: Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window
-    y: Screen.desktopAvailableHeight - height;
+//    minimumHeight: height;
+//    maximumHeight: height;
+//    maximumWidth: width;
+//    minimumWidth: width;
+    flags: Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window | Qt.Tool
+    y: maximumHeight - minimumHeight;
 
-    Behavior on maximumHeight {
+    Behavior on height {
         PropertyAnimation {
-            easing.type: Easing.Bezier;
+            easing: Easing.Linear
             duration: 1500
         }
     }
 
-     Behavior on minimumHeight {
+    Behavior on y {
         PropertyAnimation {
-            easing.type: Easing.Bezier;
+            easing: Easing.Linear
             duration: 1500
         }
     }
+
+//     Behavior on minimumHeight {
+//        PropertyAnimation {
+//            easing.type: Easing.Bezier;
+//            duration: 1500
+//        }
+//    }
 
     Text {
         id: iptext
@@ -79,12 +88,17 @@ ApplicationWindow {
             anchors.fill: settingsIcon
 
             onClicked: {
-                if (window.maximumHeight === 50 && window.minimumHeight === 50) {
-                    window.maximumHeight = Screen.desktopAvailableHeight
-                    window.minimumHeight = Screen.desktopAvailableHeight
+                if (window.height === window.minimumHeight) {
+//                if (window.maximumHeight === 50 && window.minimumHeight === 50) {
+                    window.height = window.maximumHeight
+                    window.y = 0;
+//                    window.minimumHeight = Screen.desktopAvailableHeight
+//                    window.minimumHeight = Screen.desktopAvailableHeight
                 } else {
-                    window.maximumHeight = 50;
-                    window.minimumHeight = 50;
+//                    window.maximumHeight = 50;
+//                    window.minimumHeight = 50;
+                    window.height = window.minimumHeight;
+                    window.y = window.maximumHeight - window.minimumHeight;
                 }
             }
         }
