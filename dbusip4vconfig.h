@@ -22,6 +22,9 @@ public:
     Q_PROPERTY(QString Gateway READ gateway)
     QString gateway() const;
 
+    Q_PROPERTY(QString Domains READ domains)
+    QString domains() const;
+
 
 Q_SIGNALS:
     void PropertiesChanged(const QVariantMap &properties);

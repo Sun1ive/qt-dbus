@@ -13,47 +13,54 @@ ApplicationWindow {
     minimumHeight: 50
     maximumHeight: Screen.desktopAvailableHeight
     visible: true
-//    minimumHeight: height;
-//    maximumHeight: height;
-//    maximumWidth: width;
-//    minimumWidth: width;
     flags: Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window | Qt.Tool
     y: maximumHeight - minimumHeight;
 
-    Behavior on height {
-        PropertyAnimation {
-            easing: Easing.Linear
-            duration: 1500
-        }
-    }
-
-    Behavior on y {
-        PropertyAnimation {
-            easing: Easing.Linear
-            duration: 1500
-        }
-    }
-
-//     Behavior on minimumHeight {
+//    Behavior on height {
 //        PropertyAnimation {
-//            easing.type: Easing.Bezier;
+//            easing: Easing.Linear
 //            duration: 1500
 //        }
 //    }
 
+//    Behavior on y {
+//        PropertyAnimation {
+//            easing: Easing.Linear
+//            duration: 1500
+//        }
+//    }
+
+
+
     Text {
-        id: iptext
-        x: 9
+        id: hostnameText
+        x: 22
+        y: 13
+        text: qsTr("Hostname: " + dbus.hostname);
+    }
+
+    Text {
+        id: ipText
+        x: 442
         y: 13
         text: qsTr("IP: " + dbus.ip)
     }
 
     Text {
-        id: hostname
-        x: 191
+        id: gatewayText
+        x: 738
         y: 13
-        text: qsTr("Hostname: " + dbus.hostname);
+        text: qsTr("Gateway: " + dbus.gateway)
     }
+
+
+    Text {
+        id: macText
+        x: 1090
+        y: 13
+        text: qsTr("Mac: " + dbus.mac)
+    }
+
 
     Image {
         id: icon
@@ -88,6 +95,7 @@ ApplicationWindow {
             anchors.fill: settingsIcon
 
             onClicked: {
+                /*
                 if (window.height === window.minimumHeight) {
 //                if (window.maximumHeight === 50 && window.minimumHeight === 50) {
                     window.height = window.maximumHeight
@@ -100,10 +108,15 @@ ApplicationWindow {
                     window.height = window.minimumHeight;
                     window.y = window.maximumHeight - window.minimumHeight;
                 }
+                */
+
+                 var component = Qt.createComponent("menu.qml")
+                 var newWindow = component.createObject(window);
+                newWindow.show();
             }
         }
     }
-
+/*
     Button {
         id: rebootBtn
         x: 1005
@@ -126,6 +139,7 @@ ApplicationWindow {
         id: rebootDialog
 
     }
+    */
     /*
     MessageDialog {
         id: rebootDialog
@@ -149,7 +163,7 @@ ApplicationWindow {
             //            this.close();
         }
     }
-*/
+
     Button {
         id: shutdownBtn
         x: 1176
@@ -159,4 +173,5 @@ ApplicationWindow {
             //            dbus.shutdownDevice();
         }
     }
+    */
 }

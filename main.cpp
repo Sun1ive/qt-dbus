@@ -33,6 +33,8 @@ int main(int argc, char *argv[])
     context->setContextProperty("dbus", &dbus);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/menu.qml")));
+
     if (engine.rootObjects().isEmpty()) {
         return -1;
     }
