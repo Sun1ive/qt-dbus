@@ -1,7 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>images/ethernet.svg</file>
-        <file>images/wifi.svg</file>
         <file>images/settings.svg</file>
+        <file>images/close.svg</file>
+        <file>images/wifi.svg</file>
     </qresource>
 </RCC>

@@ -128,5 +128,22 @@ ApplicationWindow {
         font.pixelSize: 24
     }
 
+    Image {
+        id: image
+        x: Screen.desktopAvailableWidth - 80
+        y: 14
+        width: 60
+        height: 60
+        smooth: true
+        source: "images/close.svg"
+        fillMode: Image.PreserveAspectFit
 
+        MouseArea {
+             width: parent.width
+             height: parent.height
+             onClicked:  {
+                 menuWindow.close();
+             }
+        }
+    }
 }

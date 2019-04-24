@@ -21,6 +21,7 @@ ApplicationWindow {
         x: 22
         y: 13
         text: qsTr("Hostname: " + dbus.hostname);
+        font.pointSize: 13
     }
 
     Text {
@@ -28,6 +29,7 @@ ApplicationWindow {
         x: 442
         y: 13
         text: qsTr("IP: " + dbus.ip)
+        font.pointSize: 13
     }
 
     Text {
@@ -35,16 +37,24 @@ ApplicationWindow {
         x: 738
         y: 13
         text: qsTr("Gateway: " + dbus.gateway)
+        font.pointSize: 13
     }
 
+    Text {
+        id: domainsText
+        x: 1356
+        y: 13
+        text: qsTr("Domains: " + dbus.domains)
+        font.pointSize: 13
+    }
 
     Text {
         id: macText
         x: 1090
         y: 13
         text: qsTr("Mac: " + dbus.mac)
+        font.pointSize: 13
     }
-
 
     Image {
         id: icon
