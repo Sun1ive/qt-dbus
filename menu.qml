@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.0
+import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
     id: menuWindow
@@ -36,6 +37,9 @@ ApplicationWindow {
         width: 231
         height: 40
         text: qsTr("Reboot")
+        onClicked: {
+           rebootDialog.visible = true;
+        }
     }
 
     Button {
@@ -45,6 +49,43 @@ ApplicationWindow {
         width: 231
         height: 40
         text: qsTr("Shutdown")
+        onClicked: {
+           shutdownDialog.visible = true;
+        }
+    }
+
+    MessageDialog {
+        id: rebootDialog
+        title: "Are you sure?"
+        text: "Do you want to reboot device?"
+        visible: false
+        icon: StandardIcon.Question
+        standardButtons: StandardButton.Yes | StandardButton.No
+        width: 500
+        height: 200
+        onYes: {
+            console.log("ON YES")
+        }
+        onNo: {
+            console.log("ON NO")
+        }
+    }
+
+    MessageDialog {
+        id: shutdownDialog
+        title: "Are you sure?"
+        text: "Do you want to shutdown device?"
+        visible: false
+        icon: StandardIcon.Question
+        standardButtons: StandardButton.Yes | StandardButton.No
+        width: 500
+        height: 200
+        onYes: {
+            console.log("ON YES")
+        }
+        onNo: {
+            console.log("ON NO")
+        }
     }
 
     Text {
