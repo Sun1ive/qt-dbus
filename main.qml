@@ -1,21 +1,22 @@
-import QtQuick 2.12
-import QtQuick.Window 2.2
+import QtQuick 2.0
+import QtQuick.Window 2.0
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+import QtQuick.Controls 2.0
+import QtQuick.Controls.Material 2.0
 import QtQuick.Dialogs 1.2
 import "getColor.js" as ColorFunc
 
 ApplicationWindow {
     id: window
     width: Screen.desktopAvailableWidth
-    height: window.panelHeight
+
     minimumHeight: window.panelHeight
     maximumHeight: window.windowAvailableHeight
     visible: true
     flags: Qt.FramelessWindowHint | Qt.Tool | Qt.WA_TranslucentBackground
     color: "#00000000"
     y: maximumHeight - minimumHeight
+    height: minimumHeight
 
     readonly property bool isContentOpened: content.height === window.maximumHeight
                                             - window.minimumHeight
@@ -37,8 +38,12 @@ ApplicationWindow {
         console.log('Content closed', isContentClosed)
         if (isContentClosed) {
             window.y = window.maximumHeight - window.minimumHeight
-            window.height = window.minimumHeight
+            window.height = maximumHeight - y
         }
+    }
+
+    onHeightChanged: {
+        console.log('height', height)
     }
 
     Rectangle {
@@ -46,7 +51,7 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.right: parent.right
         height: 0
-        y: window.height - window.panelHeight - height
+        y: parent.height - height
         color: 'red'
 
         Behavior on height {
@@ -56,12 +61,8 @@ ApplicationWindow {
         }
     }
 
-    Rectangle {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        id: container
-        width: window.width
+    footer: Rectangle {
+        id: footer
         height: window.panelHeight
         color: "#c0c0c0"
 
@@ -159,9 +160,9 @@ ApplicationWindow {
                         content.height = 0
                         window.nextOpen = true
                     } else {
-                        window.height = window.windowAvailableHeight
                         window.y = 0
-                        content.height = window.height - window.panelHeight
+                        window.height = maximumHeight - y
+                        content.height = window.maximumHeight - window.minimumHeight
                         window.nextOpen = false
                     }
                 }

@@ -211,7 +211,7 @@ QString Dbus::getDomains() const {
 QString Dbus::getMac() const {
     foreach(QNetworkInterface interface, QNetworkInterface::allInterfaces())
     {
-        if (!(interface.flags() & QNetworkInterface::Loopback)) {
+        if (!(interface.flags() & QNetworkInterface::IsLoopBack)) {
             qDebug() << interface.hardwareAddress();
             return interface.hardwareAddress();
         }
