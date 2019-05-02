@@ -22,10 +22,8 @@ int main(int argc, char *argv[])
 
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QCoreApplication::setAttribute(Qt::AA_X11InitThreads);
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-
     QGuiApplication app(argc, argv);
+    app.setApplicationDisplayName("Hello world");
 
     QQmlApplicationEngine engine;
     QQmlContext *context = engine.rootContext();

@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>getColor.js</file>
         <file>menu.qml</file>
+        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>
