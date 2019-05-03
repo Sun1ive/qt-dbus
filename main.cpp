@@ -8,7 +8,7 @@
 using namespace std;
 
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
 
     if(!QDBusConnection::systemBus().isConnected()) {
@@ -29,9 +29,7 @@ int main(int argc, char *argv[])
     QQmlContext *context = engine.rootContext();
 
     context->setContextProperty("dbus", &dbus);
-
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    engine.load(QUrl(QStringLiteral("qrc:/menu.qml")));
 
     if (engine.rootObjects().isEmpty()) {
         return -1;

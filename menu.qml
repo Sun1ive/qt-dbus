@@ -7,7 +7,7 @@ ApplicationWindow {
     id: menuWindow
     width: Screen.desktopAvailableWidth
     height: Screen.desktopAvailableHeight
-    flags: Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint | Qt.Window | Qt.Tool
+    flags: Qt.FramelessWindowHint | Qt.Tool
     y: 0
 
     Text {
@@ -22,7 +22,7 @@ ApplicationWindow {
 
     Text {
         id: systemActions
-        x: Screen.desktopAvailableWidth - 430;
+        x: Screen.desktopAvailableWidth - 430
         y: 66
         width: 231
         height: 40
@@ -38,7 +38,7 @@ ApplicationWindow {
         height: 40
         text: qsTr("Reboot")
         onClicked: {
-           rebootDialog.visible = true;
+            rebootDialog.visible = true
         }
     }
 
@@ -50,7 +50,7 @@ ApplicationWindow {
         height: 40
         text: qsTr("Shutdown")
         onClicked: {
-           shutdownDialog.visible = true;
+            shutdownDialog.visible = true
         }
     }
 
@@ -139,11 +139,13 @@ ApplicationWindow {
         fillMode: Image.PreserveAspectFit
 
         MouseArea {
-             width: parent.width
-             height: parent.height
-             onClicked:  {
-                 menuWindow.close();
-             }
+            width: parent.width
+            height: parent.height
+            onClicked: {
+                menuWindow.close()
+                f.height = 50
+                console.log('exec')
+            }
         }
     }
 }

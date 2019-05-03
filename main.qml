@@ -9,7 +9,6 @@ import "getColor.js" as ColorFunc
 ApplicationWindow {
     id: window
     width: Screen.desktopAvailableWidth
-
     minimumHeight: window.panelHeight
     maximumHeight: window.windowAvailableHeight
     visible: true
@@ -17,6 +16,8 @@ ApplicationWindow {
     color: "#00000000"
     y: maximumHeight - minimumHeight
     height: minimumHeight
+
+    property alias f: footer
 
     readonly property bool isContentOpened: content.height === window.maximumHeight
                                             - window.minimumHeight
@@ -66,21 +67,22 @@ ApplicationWindow {
         height: window.panelHeight
         color: "#c0c0c0"
 
-        Column {
-            anchors.centerIn: parent
-            Button {
-                text: qsTr("HELLOO")
+        Behavior on height {
+            PropertyAnimation {
+                duration: 500
             }
+        }
 
-            RadioButton {
-                text: qsTr("Small")
-            }
-            RadioButton {
-                text: qsTr("Medium")
-                checked: true
-            }
-            RadioButton {
-                text: qsTr("Large")
+        onHeightChanged: {
+            if (height === 0) {
+                console.log(height)
+                var component = Qt.createComponent("menu.qml")
+                if (component.status === Component.Ready) {
+                    var newWindow = component.createObject(parent)
+                    newWindow.show()
+                }
+            } else {
+                console.log(height)
             }
         }
 
@@ -155,16 +157,19 @@ ApplicationWindow {
 
             MouseArea {
                 anchors.fill: settingsIcon
+                //                onClicked: {
+                //                    if (!window.nextOpen) {
+                //                        content.height = 0
+                //                        window.nextOpen = true
+                //                    } else {
+                //                        window.y = 0
+                //                        window.height = maximumHeight - y
+                //                        content.height = window.maximumHeight - window.minimumHeight
+                //                        window.nextOpen = false
+                //                    }
+                //                }
                 onClicked: {
-                    if (!window.nextOpen) {
-                        content.height = 0
-                        window.nextOpen = true
-                    } else {
-                        window.y = 0
-                        window.height = maximumHeight - y
-                        content.height = window.maximumHeight - window.minimumHeight
-                        window.nextOpen = false
-                    }
+                    footer.height = 0
                 }
             }
         }
